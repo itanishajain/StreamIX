@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="streamix",  # Your package name
-    version="0.2",  # Version of your package
+    version="0.3",  # Version of your package
     packages=find_packages(),  # Automatically find all packages in your project
     install_requires=[  # List of dependencies
         "yt-dlp",
