@@ -1,13 +1,16 @@
-import os
 import yt_dlp
 
 def download_video(url, quality):
     try:
         ydl_opts = {
-            'format': f'bestvideo[height<={quality}]+bestaudio/best[height<={quality}]',
+            'format': f'best[height<={quality}]',  # Download best video + audio format available
             'outtmpl': '%(title)s.%(ext)s',
-            'noplaylist': True,  # Avoid downloading playlists
-            'merge_output_format': 'mp4',  # Merge video and audio in mp4 format
+            'noplaylist': True,
+            'concurrent_fragment_downloads': 16,  # Increase number of simultaneous downloads
+            'quiet': True,  # Suppress logs for better speed
+            'hls_prefer_native': True,  # Use native downloader for HLS
+            'ffmpeg_location': '/path/to/ffmpeg',  # Specify ffmpeg path (if needed)
+            'geo_bypass': True,  # Allow bypass of geographical restrictions
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -23,7 +26,9 @@ def download_audio(url):
         ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': '%(title)s.%(ext)s',
-            'noplaylist': True,  # Avoid downloading playlists
+            'noplaylist': True,
+            'quiet': True,
+            'geo_bypass': True,  # Allow bypass of geographical restrictions
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -34,7 +39,7 @@ def download_audio(url):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def main():
+if __name__ == "__main__":
     print("Welcome to YouTube Downloader!")
     choice = input("Would you like to download video or audio? (video/audio): ").lower()
 
@@ -49,6 +54,3 @@ def main():
     
     else:
         print("Invalid choice! Please select 'video' or 'audio'.")
-
-if __name__ == "__main__":
-    main()
