@@ -9,7 +9,7 @@ def download_video(url, quality):
             'format': f'bestvideo[height<={quality}]+bestaudio/best',  # Download both video and audio together
             'outtmpl': '%(title)s.%(ext)s',
             'noplaylist': True,
-            'concurrent_fragment_downloads': 16,  # Increase number of simultaneous downloads
+            'concurrent_fragment_downloads': 32,  # Maximize number of simultaneous downloads
             'quiet': True,  # Suppress logs for better speed
             'geo_bypass': True,  # Allow bypass of geographical restrictions
             'merge_output_format': 'mp4',  # Merging video and audio into one file
@@ -18,10 +18,12 @@ def download_video(url, quality):
             'max_downloads': 1,  # Limit concurrent downloads to 1
             'ratelimit': -1,  # Disable rate limit (unrestricted speed)
             'http_chunk_size': 10485760,  # 10MB chunks for faster downloads
+            'socket_timeout': 30,  # Timeout after 30 seconds if stuck
+            'retries': 10,  # Retry up to 10 times in case of failure
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            print(f"Downloading both video and audio from {url}...")
+            print(f"Downloading video and audio from {url}...")
             ydl.download([url])
         print("Downloaded successfully!")
     
@@ -34,10 +36,12 @@ def download_audio(url):
             'format': 'bestaudio/best',  # Download the best available audio
             'outtmpl': '%(title)s.%(ext)s',
             'noplaylist': True,
-            'quiet': True,
+            'quiet': True,  # Suppress logs for better speed
             'geo_bypass': True,  # Allow bypass of geographical restrictions
             'ratelimit': -1,  # Disable rate limit (unrestricted speed)
             'http_chunk_size': 10485760,  # 10MB chunks for faster downloads
+            'socket_timeout': 30,  # Timeout after 30 seconds if stuck
+            'retries': 10,  # Retry up to 10 times in case of failure
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -48,43 +52,17 @@ def download_audio(url):
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def download_both(url, quality):
-    try:
-        ydl_opts = {
-            'format': f'bestvideo[height<={quality}]+bestaudio/best',  # Download both video and audio together
-            'outtmpl': '%(title)s.%(ext)s',
-            'noplaylist': True,
-            'concurrent_fragment_downloads': 16,  # Increase number of simultaneous downloads
-            'quiet': True,  # Suppress logs for better speed
-            'geo_bypass': True,  # Allow bypass of geographical restrictions
-            'merge_output_format': 'mp4',  # Merging video and audio into one file
-            'ffmpeg_location': '/path/to/ffmpeg',  # Specify ffmpeg path if needed
-            'hls_prefer_native': True,  # Use native downloader for HLS (streaming)
-            'max_downloads': 1,  # Limit concurrent downloads to 1
-            'ratelimit': -1,  # Disable rate limit (unrestricted speed)
-            'http_chunk_size': 10485760,  # 10MB chunks for faster downloads
-        }
-
-        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            print(f"Downloading both video and audio from {url}...")
-            ydl.download([url])
-        print("Downloaded successfully!")
-    
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
 if __name__ == "__main__":
     print("Welcome to YouTube Downloader!")
     print("Select an option:")
     print("1. Download Video")
     print("2. Download Audio")
-    print("3. Download Both Video and Audio")
 
-    choice = input("Enter the number of your choice (1/2/3): ").strip()
+    choice = input("Enter the number of your choice (1/2): ").strip()
 
-    if choice == '1' or choice == '3':
+    if choice == '1':
         print("Select the video quality:")
-        print("1. 240p")
+        print("1. 240p")  # Smallest size
         print("2. 360p")
         print("3. 480p")
         print("4. 720p")
@@ -93,7 +71,7 @@ if __name__ == "__main__":
         quality_choice = input("Enter the number of your chosen quality (1-5): ").strip()
 
         quality_dict = {
-            '1': '240',
+            '1': '240',  # Smallest quality
             '2': '360',
             '3': '480',
             '4': '720',
@@ -107,15 +85,11 @@ if __name__ == "__main__":
             quality = '720'
 
         url = input("Enter YouTube URL: ")
-
-        if choice == '1':
-            download_video(url, quality)
-        elif choice == '3':
-            download_both(url, quality)
+        download_video(url, quality)  # Download both video and audio as part of the video download option
     
     elif choice == '2':
         url = input("Enter YouTube URL: ")
         download_audio(url)
     
     else:
-        print("Invalid choice! Please select '1', '2', or '3'.")
+        print("Invalid choice! Please select '1' or '2'.")
