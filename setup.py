@@ -1,17 +1,23 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="streamix",  # Your package name
-    version="0.4",  # Version of your package
-    packages=find_packages(),  # Automatically find all packages in your project
-    install_requires=[  # List of dependencies
+    name="streamix",
+    version="5.0",
+    packages=find_packages(),
+    install_requires=[
         "yt-dlp",
     ],
-    long_description=open('README.md').read(),
+    entry_points={
+        "console_scripts": [
+            "streamix=streamix.index:main",  # Corrected entry point
+        ],
+    },
+    author="Tanisha Jain",
+    author_email="itanishajain@gmail.com",
+    description="Streamix: A tool for downloading YouTube videos and audio",
+    long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    author="Your Name",
-    author_email="your.email@example.com",
-    url="https://github.com/username/streamix",  # Link to GitHub
+    url="https://github.com/itanishajain/StreamIX",
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
