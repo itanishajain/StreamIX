@@ -1,5 +1,7 @@
 import yt_dlp
 import os
+import os
+os.environ['FFMPEG_BINARY'] = '/opt/homebrew/bin/ffmpeg'
 
 def download_video(url, quality):
     try:
@@ -9,7 +11,7 @@ def download_video(url, quality):
             'quiet': True,
             'merge_output_format': 'mp4',
             'geo_bypass': True,
-            'ffmpeg_location': 'ffmpeg',
+            'ffmpeg_location': '/opt/homebrew/bin/ffmpeg',
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print(f"Downloading video from {url}...")
