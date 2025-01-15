@@ -5,6 +5,7 @@ os.environ['FFMPEG_BINARY'] = '/opt/homebrew/bin/ffmpeg'
 
 def download_video(url, quality):
     try:
+        download_path = os.path.expanduser("~/Downloads")
         ydl_opts = {
             'format': f'bestvideo[height<={quality}]+bestaudio/best',
             'outtmpl': '%(title)s.%(ext)s',
@@ -25,6 +26,7 @@ def download_video(url, quality):
 
 def download_audio(url):
     try:
+        download_path = os.path.expanduser("~/Downloads")
         ydl_opts = {
             'format': 'bestaudio/best',
             'outtmpl': '%(title)s.%(ext)s',
