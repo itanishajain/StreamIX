@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="streamix",
-    version="13.1.2",
+    version="13.2.0",
     packages=find_packages(),
     install_requires=[
         "yt-dlp",

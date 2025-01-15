@@ -1,6 +1,7 @@
 import yt_dlp
 import os
-from streamix.utils import get_ffmpeg_path
+from utils import get_ffmpeg_path
+
 
 def main():
     ffmpeg_path = get_ffmpeg_path()
