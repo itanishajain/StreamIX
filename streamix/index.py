@@ -12,6 +12,9 @@ def download_video(url, quality):
             'merge_output_format': 'mp4',
             'geo_bypass': True,
             'ffmpeg_location': '/opt/homebrew/bin/ffmpeg',
+            'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+            },
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print(f"Downloading video from {url}...")
