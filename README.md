@@ -18,6 +18,30 @@ Streamix is a lightweight and efficient Python tool for downloading videos and a
 ```
 - You're all set! Just type streamix in your terminal to use it.
 
+## ffmeg Requirement
+Streamix requires FFmpeg for video and audio processing. Follow these steps to install FFmpeg on your system:
+- Linux:
+```bash
+  sudo apt update
+  sudo apt install ffmpeg
+```
+- Windows:
+- Download the FFmpeg executable from the official FFmpeg website.
+- Extract the downloaded file to a desired location (e.g.,      C:\ffmpeg).
+- Add the FFmpeg bin folder to your system's PATH:
+  - Open the Start Menu, search for "Environment Variables," and click "Edit the system environment variables."
+  - In the System Properties window, click "Environment Variables."
+  - Under "System Variables," find the Path variable and click "Edit."
+  - Add the path to the bin folder (e.g., C:\ffmpeg\bin) and click "OK."
+- MacOS:
+```bash
+  brew install ffmpeg
+```
+After installation, verify FFmpeg is installed correctly by running:
+```bash
+  ffmpeg -version
+```
+
 ## Usage
 After installation, you can start Streamix from the command line using:
 ```bash 

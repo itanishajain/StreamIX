@@ -1,45 +1,80 @@
 import yt_dlp
 import os
-import os
-os.environ['FFMPEG_BINARY'] = '/opt/homebrew/bin/ffmpeg'
+import shutil
 
+# Function to check if ffmpeg is installed
+def is_ffmpeg_installed():
+    return shutil.which("ffmpeg") is not None
+
+# Function to get the Desktop path
+def get_desktop_path():
+    return os.path.join(os.path.expanduser("~"), "Desktop")
+
+# Function to download video
 def download_video(url, quality):
     try:
-        download_path = os.path.expanduser("~/Downloads")
+        # Path to the Desktop
+        download_path = get_desktop_path()
+        if not os.path.exists(download_path):
+            raise Exception(f"Desktop path not found: {download_path}")
+
         ydl_opts = {
             'format': f'bestvideo[height<={quality}]+bestaudio/best',
-            'outtmpl': '%(title)s.%(ext)s',
+            'outtmpl': f'{download_path}/%(title)s.%(ext)s',  # Save to Desktop
             'quiet': True,
             'merge_output_format': 'mp4',
             'geo_bypass': True,
-            'ffmpeg_location': '/opt/homebrew/bin/ffmpeg',
             'http_headers': {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
             },
         }
+
+        if is_ffmpeg_installed():
+            ydl_opts['postprocessors'] = [{
+                'key': 'FFmpegVideoConvertor',
+                'preferedformat': 'mp4',
+            }]
+        else:
+            print("Warning: FFmpeg is not installed. Video and audio may not be merged.")
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print(f"Downloading video from {url}...")
             ydl.download([url])
-        print("Video downloaded successfully!")
+        print(f"Video downloaded successfully to {download_path}!")
     except Exception as e:
         print(f"An error occurred: {e}")
 
+# Function to download audio
 def download_audio(url):
     try:
-        download_path = os.path.expanduser("~/Downloads")
+        # Path to the Desktop
+        download_path = get_desktop_path()
+        if not os.path.exists(download_path):
+            raise Exception(f"Desktop path not found: {download_path}")
+
         ydl_opts = {
             'format': 'bestaudio/best',
-            'outtmpl': '%(title)s.%(ext)s',
+            'outtmpl': f'{download_path}/%(title)s.%(ext)s',  # Save to Desktop
             'quiet': True,
             'geo_bypass': True,
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }] if is_ffmpeg_installed() else None
         }
+
+        if not is_ffmpeg_installed():
+            print("Warning: FFmpeg is not installed. Audio may not be converted to MP3 format.")
+
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             print(f"Downloading audio from {url}...")
             ydl.download([url])
-        print("Audio downloaded successfully!")
+        print(f"Audio downloaded successfully to {download_path}!")
     except Exception as e:
         print(f"An error occurred: {e}")
 
+# Main function
 def main():
     print("Welcome to Streamix!")
     print("1. Download Video")
@@ -61,5 +96,6 @@ def main():
     else:
         print("Invalid option. Exiting.")
 
+# Entry point
 if __name__ == "__main__":
     main()
