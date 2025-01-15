@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: streamix
-Version: 13
+Version: 13.1.2
 Summary: Streamix: A tool for downloading YouTube videos and audio
 Home-page: https://github.com/itanishajain/StreamIX
 Author: Tanisha Jain
@@ -10,6 +10,7 @@ Classifier: License :: OSI Approved :: MIT License
 Classifier: Operating System :: OS Independent
 Description-Content-Type: text/markdown
 Requires-Dist: yt-dlp
+Requires-Dist: imageio[ffmpeg]
 
 # STREAMIX
 Streamix is a lightweight and efficient Python tool for downloading videos and audio from YouTube. With customizable quality options and seamless integration with yt-dlp and FFmpeg, Streamix empowers you to save your favorite content in no time. 🚀
@@ -30,30 +31,6 @@ Streamix is a lightweight and efficient Python tool for downloading videos and a
   pip install streamix
 ```
 - You're all set! Just type streamix in your terminal to use it.
-
-## ffmeg Requirement
-Streamix requires FFmpeg for video and audio processing. Follow these steps to install FFmpeg on your system:
-- Linux:
-```bash
-  sudo apt update
-  sudo apt install ffmpeg
-```
-- Windows:
-- Download the FFmpeg executable from the official FFmpeg website.
-- Extract the downloaded file to a desired location (e.g.,      C:\ffmpeg).
-- Add the FFmpeg bin folder to your system's PATH:
-  - Open the Start Menu, search for "Environment Variables," and click "Edit the system environment variables."
-  - In the System Properties window, click "Environment Variables."
-  - Under "System Variables," find the Path variable and click "Edit."
-  - Add the path to the bin folder (e.g., C:\ffmpeg\bin) and click "OK."
-- MacOS:
-```bash
-  brew install ffmpeg
-```
-After installation, verify FFmpeg is installed correctly by running:
-```bash
-  ffmpeg -version
-```
 
 ## Usage
 After installation, you can start Streamix from the command line using:

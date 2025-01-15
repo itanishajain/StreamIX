@@ -1,10 +1,16 @@
 import yt_dlp
 import os
-import shutil
+from streamix.utils import get_ffmpeg_path
 
-# Function to check if ffmpeg is installed
-def is_ffmpeg_installed():
-    return shutil.which("ffmpeg") is not None
+def main():
+    ffmpeg_path = get_ffmpeg_path()
+    if ffmpeg_path is None:
+        print("Warning: FFmpeg is not installed. Video and audio may not be merged or processed properly.")
+    else:
+        print(f"FFmpeg is located at {ffmpeg_path}")
+    
+    # Your main logic here
+    print("Streamix is ready to run!")
 
 # Function to get the Desktop path
 def get_desktop_path():
@@ -29,7 +35,8 @@ def download_video(url, quality):
             },
         }
 
-        if is_ffmpeg_installed():
+        # Check if FFmpeg is available
+        if get_ffmpeg_path():
             ydl_opts['postprocessors'] = [{
                 'key': 'FFmpegVideoConvertor',
                 'preferedformat': 'mp4',
@@ -61,10 +68,10 @@ def download_audio(url):
                 'key': 'FFmpegExtractAudio',
                 'preferredcodec': 'mp3',
                 'preferredquality': '192',
-            }] if is_ffmpeg_installed() else None
+            }] if get_ffmpeg_path() else None
         }
 
-        if not is_ffmpeg_installed():
+        if not get_ffmpeg_path():
             print("Warning: FFmpeg is not installed. Audio may not be converted to MP3 format.")
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
