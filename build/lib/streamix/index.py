@@ -3,32 +3,30 @@ import os
 from utils import get_ffmpeg_path
 
 
-def main():
-    ffmpeg_path = get_ffmpeg_path()
-    if ffmpeg_path is None:
-        print("Warning: FFmpeg is not installed. Video and audio may not be merged or processed properly.")
-    else:
-        print(f"FFmpeg is located at {ffmpeg_path}")
-    
-    # Your main logic here
-    print("Streamix is ready to run!")
-
 # Function to get the Desktop path
 def get_desktop_path():
-    return os.path.join(os.path.expanduser("~"), "Desktop")
+    try:
+        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+        if not os.path.exists(desktop_path):
+            raise Exception("Desktop path not found.")
+        return desktop_path
+    except Exception as e:
+        print(f"Error getting Desktop path: {e}")
+        return None
+
 
 # Function to download video
 def download_video(url, quality):
     try:
-        # Path to the Desktop
+        # Get Desktop path
         download_path = get_desktop_path()
-        if not os.path.exists(download_path):
-            raise Exception(f"Desktop path not found: {download_path}")
+        if not download_path:
+            raise Exception("Unable to resolve Desktop path.")
 
         ydl_opts = {
             'format': f'bestvideo[height<={quality}]+bestaudio/best',
-            'outtmpl': f'{download_path}/%(title)s.%(ext)s',  # Save to Desktop
-            'quiet': True,
+            'outtmpl': f'{download_path}/%(title)s.%(ext)s',
+            'quiet': False,  # Set to True to suppress output logs
             'merge_output_format': 'mp4',
             'geo_bypass': True,
             'http_headers': {
@@ -37,7 +35,8 @@ def download_video(url, quality):
         }
 
         # Check if FFmpeg is available
-        if get_ffmpeg_path():
+        ffmpeg_path = get_ffmpeg_path()
+        if ffmpeg_path:
             ydl_opts['postprocessors'] = [{
                 'key': 'FFmpegVideoConvertor',
                 'preferedformat': 'mp4',
@@ -52,18 +51,19 @@ def download_video(url, quality):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+
 # Function to download audio
 def download_audio(url):
     try:
-        # Path to the Desktop
+        # Get Desktop path
         download_path = get_desktop_path()
-        if not os.path.exists(download_path):
-            raise Exception(f"Desktop path not found: {download_path}")
+        if not download_path:
+            raise Exception("Unable to resolve Desktop path.")
 
         ydl_opts = {
             'format': 'bestaudio/best',
-            'outtmpl': f'{download_path}/%(title)s.%(ext)s',  # Save to Desktop
-            'quiet': True,
+            'outtmpl': f'{download_path}/%(title)s.%(ext)s',
+            'quiet': False,  # Set to True to suppress output logs
             'geo_bypass': True,
             'postprocessors': [{
                 'key': 'FFmpegExtractAudio',
@@ -81,6 +81,7 @@ def download_audio(url):
         print(f"Audio downloaded successfully to {download_path}!")
     except Exception as e:
         print(f"An error occurred: {e}")
+
 
 # Main function
 def main():
@@ -103,6 +104,7 @@ def main():
         download_audio(url)
     else:
         print("Invalid option. Exiting.")
+
 
 # Entry point
 if __name__ == "__main__":
