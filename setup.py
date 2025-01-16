@@ -2,12 +2,17 @@ from setuptools import setup, find_packages
 
 setup(
     name="streamix",
-    version="13.2.1",
+    version="13.2.2",
     packages=find_packages(),
     install_requires=[
         "yt-dlp",
         "imageio[ffmpeg]",
+        'numpy', 
+        'pillow', 
+        'psutil', 
+        'setuptools'
     ],
+    include_package_data=True,  # Ensures non-Python files are included
     entry_points={
         "console_scripts": [
             "streamix=streamix.index:main",  # Corrected entry point
