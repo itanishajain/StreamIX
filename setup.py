@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name="streamix",
-    version="13.2.2",
-    packages=find_packages(),
+    version="13.2.4",
+    packages=find_packages(include=["streamix", "streamix.*"]),
     install_requires=[
         "yt-dlp",
         "imageio[ffmpeg]",

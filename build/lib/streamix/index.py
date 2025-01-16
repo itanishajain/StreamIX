@@ -1,26 +1,49 @@
-import yt_dlp
+import sys
 import os
+import yt_dlp
+
+if __name__ == "__main__":
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import get_ffmpeg_path
 
 
 # Function to get the Desktop path
 def get_desktop_path():
+    """Get the user's Desktop path."""
     try:
-        # Use `os.path.expanduser` for cross-platform Desktop path
-        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-        if not os.path.exists(desktop_path):
-            raise FileNotFoundError("Desktop path not found.")
-        print(f"Resolved Desktop Path: {desktop_path}")  # Debug
-        return desktop_path
+        # Expand user's home directory
+        home_path = os.path.expanduser("~")
+        print(f"Resolved Home Path: {home_path}")  # Debug
+        
+        # Construct the Desktop path
+        desktop_path = os.path.join(home_path, "Desktop")
+        print(f"Constructed Desktop Path: {desktop_path}")  # Debug
+        
+        # Check if the Desktop path exists
+        if os.path.exists(desktop_path):
+            return desktop_path
+        else:
+            raise FileNotFoundError("Desktop path does not exist.")
     except Exception as e:
-        print(f"Error getting Desktop path: {e}")
+        print(f"Error resolving Desktop path: {e}")
+        return None
+
+# Function to get the default Downloads path as a fallback
+def get_default_download_path():
+    """Get the default Downloads path as a fallback."""
+    try:
+        default_download_path = os.path.join(os.path.expanduser("~"), "Downloads")
+        print(f"Default Downloads Path: {default_download_path}")  # Debug
+        return default_download_path
+    except Exception as e:
+        print(f"Error resolving default download path: {e}")
         return None
 
 # Function to download video
 def download_video(url, quality):
     try:
-        # Get Downloads path
-        download_path = get_desktop_path()
+        # Get Downloads path (Desktop as priority)
+        download_path = get_desktop_path() or get_default_download_path()
         if not download_path:
             raise Exception("Unable to resolve Downloads path.")
 
@@ -59,8 +82,8 @@ def download_video(url, quality):
 # Function to download audio
 def download_audio(url):
     try:
-        # Get Downloads path
-        download_path = get_desktop_path()
+        # Get Downloads path (Desktop as priority)
+        download_path = get_desktop_path() or get_default_download_path()
         if not download_path:
             raise Exception("Unable to resolve Downloads path.")
 
@@ -111,7 +134,5 @@ def main():
     else:
         print("Invalid option. Exiting.")
 
-
-# Entry point
 if __name__ == "__main__":
     main()
