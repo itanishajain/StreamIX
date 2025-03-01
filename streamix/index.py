@@ -1,11 +1,7 @@
 import sys
 import os
 import yt_dlp
-
-if __name__ == "__main__":
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import get_ffmpeg_path
-
 
 # Function to get the Desktop path
 def get_desktop_path():

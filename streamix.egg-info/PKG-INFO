@@ -1,6 +1,6 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.2
 Name: streamix
-Version: 13.2.4
+Version: 13.2.5
 Summary: Streamix: A tool for downloading YouTube videos and audio
 Home-page: https://github.com/itanishajain/StreamIX
 Author: Tanisha Jain
@@ -15,6 +15,14 @@ Requires-Dist: numpy
 Requires-Dist: pillow
 Requires-Dist: psutil
 Requires-Dist: setuptools
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: requires-dist
+Dynamic: summary
 
 # STREAMIX
 Streamix is a lightweight and efficient Python tool for downloading videos and audio from YouTube. With customizable quality options and seamless integration with yt-dlp and FFmpeg, Streamix empowers you to save your favorite content in no time. 🚀

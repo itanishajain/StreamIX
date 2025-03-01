@@ -1,0 +1,13 @@
+{
+    "name": "streamix",
+    "private": true,
+    "scripts": {
+      "start": "node index.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+      "inquirer": "^8.2.5",
+      "node-fetch": "^2.6.9",
+      "ytdl-core": "^4.11.4"
+    }
+  }
